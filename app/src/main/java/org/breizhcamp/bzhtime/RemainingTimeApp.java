@@ -20,8 +20,8 @@ public class RemainingTimeApp extends Application {
     };
     public static final String DEFAULT_ROOM = ROOMS[0];
 
-    //private static final String API_URL = "http://www.breizhcamp.org/json";
-    private static final String API_URL = "http://192.168.0.1/breizhcamp-vote/server";
+    private static final String API_URL = "http://www.breizhcamp.org/json";
+    //private static final String API_URL = "http://192.168.0.1/breizhcamp-vote/server";
 
     @Override
     public void onCreate() {
