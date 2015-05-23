@@ -1,6 +1,13 @@
 <resources>
-    <string name="app_name">BzhCmpTimer</string>
+    <string name="app_name">BzhTime</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="change_room">Changer de salle</string>
+    <string name="pick_room">Choisissez une salle</string>
+
+
+    <string name="nb_min">0 min</string>
+    <string name="no_session">Aucune session en cours</string>
+
+
+    <string name="reload_schedule">Reload programme</string>
 </resources>

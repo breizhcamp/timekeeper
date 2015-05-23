@@ -1,0 +1,66 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#0099cc"
+    tools:context=".RemainingTimeActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/logoImg"
+            android:src="@drawable/logo"
+            android:contentDescription="logo"
+            android:background="#000000"
+            android:scaleType="fitCenter" />
+
+        <TextView android:id="@+id/fullscreen_content" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:keepScreenOn="true" android:textColor="#ff35cdff"
+            android:textStyle="bold" android:textSize="80sp" android:gravity="center"
+            android:text="@string/nb_min"
+            android:layout_toRightOf="@+id/logoImg"
+            android:layout_toEndOf="@+id/logoImg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_session"
+            android:id="@+id/sessionNameTxt"
+            android:layout_marginRight="5sp"
+            android:layout_alignEnd="@id/fullscreen_content"
+            android:layout_toRightOf="@+id/logoImg"
+            android:layout_toEndOf="@+id/logoImg"
+            android:gravity="end"
+            android:layout_alignParentBottom="true"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay" android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <Button android:id="@+id/reloadScheduleBtn" style="?metaButtonBarButtonStyle"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="@string/reload_schedule" />
+
+            <Button android:id="@+id/changeRoomBtn" style="?metaButtonBarButtonStyle"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="@string/change_room" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>
