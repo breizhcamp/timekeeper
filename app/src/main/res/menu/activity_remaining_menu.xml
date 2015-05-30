@@ -5,4 +5,9 @@
         android:icon="@mipmap/ic_cached_white_24dp"
         android:title="@string/reload_schedule"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_options"
+        android:icon="@mipmap/ic_settings_white_24dp"
+        android:title="@string/options"
+        app:showAsAction="ifRoom" />
 </menu>

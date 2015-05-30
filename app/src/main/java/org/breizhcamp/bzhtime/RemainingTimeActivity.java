@@ -45,7 +45,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
     @InjectView(R.id.fullscreen_content_controls)
     protected LinearLayout controls;
 
-    @InjectViews({ R.id.reloadScheduleBtn, R.id.changeRoomBtn })
+    @InjectViews({ R.id.overrideTimeBtn, R.id.changeRoomBtn })
     protected List<View> buttons;
 
     @InjectView(R.id.sessionNameTxt)
@@ -97,6 +97,10 @@ public class RemainingTimeActivity extends FullScreenActivity {
                 reloadSchedule();
                 return true;
 
+            case R.id.action_options:
+                //TODO
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -115,9 +119,9 @@ public class RemainingTimeActivity extends FullScreenActivity {
         }
     }
 
-    @OnClick(R.id.reloadScheduleBtn)
-    protected void onReloadScheduleClick(View view) {
-        reloadSchedule();
+    @OnClick(R.id.overrideTimeBtn)
+    protected void onOverrideTimeClick(View view) {
+        //TODO
     }
 
     @OnClick(R.id.changeRoomBtn)

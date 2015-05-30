@@ -15,7 +15,7 @@
             android:layout_height="fill_parent"
             android:id="@+id/logoImg"
             android:src="@drawable/logo"
-            android:contentDescription="logo"
+            android:contentDescription="@string/logo"
             android:background="#000000"
             android:scaleType="fitCenter" />
 
@@ -51,9 +51,9 @@
             android:background="@color/black_overlay" android:orientation="horizontal"
             tools:ignore="UselessParent">
 
-            <Button android:id="@+id/reloadScheduleBtn" style="?metaButtonBarButtonStyle"
+            <Button android:id="@+id/overrideTimeBtn" style="?metaButtonBarButtonStyle"
                 android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="@string/reload_schedule" />
+                android:layout_weight="1" android:text="@string/override_time" />
 
             <Button android:id="@+id/changeRoomBtn" style="?metaButtonBarButtonStyle"
                 android:layout_width="0dp" android:layout_height="wrap_content"

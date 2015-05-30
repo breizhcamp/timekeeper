@@ -1,13 +1,16 @@
 <resources>
     <string name="app_name">BzhTime</string>
 
-    <string name="change_room">Changer de salle</string>
-    <string name="pick_room">Choisissez une salle</string>
-
-
+    <string name="logo">logo</string>
     <string name="nb_min">0 min</string>
     <string name="no_session">Aucune session en cours</string>
 
+    <string name="change_room">Changer de salle</string>
+    <string name="override_time">Définir tps restant</string>
 
-    <string name="reload_schedule">Reload programme</string>
+    <string name="pick_room">Choisissez une salle</string>
+
+    <string name="reload_schedule">Recharger programme</string>
+    <string name="options">Adresse schedule.json</string>
+
 </resources>
