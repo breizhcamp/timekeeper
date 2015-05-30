@@ -29,8 +29,8 @@ dependencies {
     //bus message
     compile 'de.greenrobot:eventbus:2.4.0'
 
-    //rest client
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    //http client
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
 
     //widget injection
     compile 'com.jakewharton:butterknife:6.1.0'

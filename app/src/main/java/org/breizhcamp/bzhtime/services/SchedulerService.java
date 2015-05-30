@@ -3,14 +3,18 @@ package org.breizhcamp.bzhtime.services;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import org.breizhcamp.bzhtime.RemainingTimeApp;
 import org.breizhcamp.bzhtime.dto.Jour;
 import org.breizhcamp.bzhtime.dto.Proposal;
 import org.breizhcamp.bzhtime.dto.Schedule;
 import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
-import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
 import org.breizhcamp.bzhtime.events.GetCurrentSessionEvt;
-import org.breizhcamp.bzhtime.repositories.ScheduleRepo;
+import org.breizhcamp.bzhtime.util.IOUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -21,14 +25,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Load schedule file from breizhcamp website and retrieve current session
@@ -39,12 +38,12 @@ public class SchedulerService {
     private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm");
 
     private File cacheDir;
-    private ScheduleRepo scheduleRepo;
+    private String scheduleUrl = RemainingTimeApp.DEFAULT_SCHEDULE_URL;
 
+    private OkHttpClient httpClient = new OkHttpClient();
 
-    public SchedulerService(File cacheDir, ScheduleRepo scheduleRepo) {
+    public SchedulerService(File cacheDir) {
         this.cacheDir = cacheDir;
-        this.scheduleRepo = scheduleRepo;
         bus.register(this);
     }
 
@@ -112,13 +111,15 @@ public class SchedulerService {
 
 
     private void loadScheduleFile(final String room) {
-        scheduleRepo.get(new Callback<Response>() {
+        Request request = new Request.Builder().url(scheduleUrl).build();
+
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void success(Response res, Response response) {
+            public void onResponse(Response response) throws IOException {
                 File scheduleFile = new File(cacheDir, "schedule.json");
                 try {
                     FileOutputStream out = new FileOutputStream(scheduleFile);
-                    copy(res.getBody().in(), out);
+                    IOUtils.copy(response.body().byteStream(), out);
                     out.close();
                     getCurrentSession(room);
 
@@ -128,14 +129,14 @@ public class SchedulerService {
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                postError("Impossible de récupérer le fichier schedule depuis Internet", error);
+            public void onFailure(Request request, IOException e) {
+                postError("Impossible de récupérer le fichier schedule depuis Internet", e);
             }
         });
     }
 
     private void postError(String msg, Exception e) {
-        Log.e("bzhtime", msg, e);
+        Log.e("org.breizhcamp.bzhtime", msg, e);
         bus.post(new CurrentSessionEvt(msg));
     }
 
@@ -154,23 +155,7 @@ public class SchedulerService {
         return null;
     }
 
-    public static int copy(InputStream input, OutputStream output) throws IOException {
-        long count = copyLarge(input, output);
-        if (count > Integer.MAX_VALUE) {
-            return -1;
-        }
-        return (int) count;
-    }
-
-    public static long copyLarge(InputStream input, OutputStream output)
-            throws IOException {
-        byte[] buffer = new byte[4096];
-        long count = 0;
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-            count += n;
-        }
-        return count;
+    public void setScheduleUrl(String scheduleUrl) {
+        this.scheduleUrl = scheduleUrl;
     }
 }

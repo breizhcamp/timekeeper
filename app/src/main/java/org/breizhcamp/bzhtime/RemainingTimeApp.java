@@ -4,11 +4,8 @@ import android.app.Application;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import org.breizhcamp.bzhtime.repositories.ScheduleRepo;
 import org.breizhcamp.bzhtime.services.SchedulerService;
 import org.breizhcamp.bzhtime.services.TimeService;
-
-import retrofit.RestAdapter;
 
 /**
  * "Main class"
@@ -20,8 +17,7 @@ public class RemainingTimeApp extends Application {
     };
     public static final String DEFAULT_ROOM = ROOMS[0];
 
-    private static final String API_URL = "http://www.breizhcamp.org/json";
-    //private static final String API_URL = "http://192.168.0.1/breizhcamp-vote/server";
+    public static final String DEFAULT_SCHEDULE_URL = "http://www.breizhcamp.org/json/schedule.json";
 
     @Override
     public void onCreate() {
@@ -29,16 +25,8 @@ public class RemainingTimeApp extends Application {
         JodaTimeAndroid.init(this);
 
         //class are registered with constructor on bus which keep references
-        SchedulerService schedulerService = new SchedulerService(getCacheDir(), scheduleRepo());
+        SchedulerService schedulerService = new SchedulerService(getCacheDir());
         new TimeService(schedulerService);
     }
-
-    private ScheduleRepo scheduleRepo() {
-        return new RestAdapter.Builder()
-                .setEndpoint(API_URL)
-                .build()
-                .create(ScheduleRepo.class);
-    }
-
 
 }

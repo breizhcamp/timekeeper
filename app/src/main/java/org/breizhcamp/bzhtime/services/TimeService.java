@@ -53,6 +53,7 @@ public class TimeService {
      * @param event Event
      */
     public void onEvent(FlushScheduleCacheEvt event) {
+        schedulerService.setScheduleUrl(event.getNewScheduleUrl());
         schedulerService.clearCache();
         reloadCurrentSession();
     }

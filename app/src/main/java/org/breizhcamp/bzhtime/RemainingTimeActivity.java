@@ -90,22 +90,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
         super.onStop();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_reload:
-                reloadSchedule();
-                return true;
-
-            case R.id.action_options:
-                //TODO
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
+    /* ***********  EVENTS  ********** */
     public void onEventMainThread(TimeEvent event) {
         minutesTxt.setText(event.getNbMinutes() + " min");
     }
@@ -117,6 +102,46 @@ public class RemainingTimeActivity extends FullScreenActivity {
         } else {
             sessionNameTxt.setText(proposal.getTitle());
         }
+    }
+
+    /* ***********  ACTIONS  ********** */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_reload:
+                reloadSchedule();
+                return true;
+
+            case R.id.action_options:
+                changeScheduleUrl();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    protected void changeScheduleUrl() {
+        final View dialogView = getLayoutInflater().inflate(R.layout.options_dialog, null);
+        final TextView scheduleUrl = ButterKnife.findById(dialogView, R.id.scheduleUrlTxt);
+        scheduleUrl.setText(getScheduleUrl());
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.options)
+                .setView(dialogView)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setScheduleUrl(scheduleUrl.getText().toString());
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.overrideTimeBtn)
@@ -142,13 +167,13 @@ public class RemainingTimeActivity extends FullScreenActivity {
         EventBus.getDefault().post(new CountdownMgtEvt(true, getRoomName()));
     }
 
+    protected void reloadSchedule() {
+        EventBus.getDefault().post(new FlushScheduleCacheEvt(getScheduleUrl()));
+    }
+
     protected String getRoomName() {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         return prefs.getString("room", RemainingTimeApp.DEFAULT_ROOM);
-    }
-
-    protected void reloadSchedule() {
-        EventBus.getDefault().post(new FlushScheduleCacheEvt());
     }
 
     protected void setRoomName(String roomName) {
@@ -157,6 +182,18 @@ public class RemainingTimeActivity extends FullScreenActivity {
         editor.putString("room", roomName);
         editor.apply();
         updateTitle(roomName);
+    }
+
+    protected String getScheduleUrl() {
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        return prefs.getString("scheduleUrl", RemainingTimeApp.DEFAULT_ROOM);
+    }
+
+    protected void setScheduleUrl(String scheduleUrl) {
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("scheduleUrl", scheduleUrl);
+        editor.apply();
     }
 
     private void updateTitle(String roomName) {
