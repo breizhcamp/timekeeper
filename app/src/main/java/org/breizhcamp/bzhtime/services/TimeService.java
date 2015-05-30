@@ -6,10 +6,9 @@ import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
 import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
 import org.breizhcamp.bzhtime.events.GetCurrentSessionEvt;
 import org.breizhcamp.bzhtime.events.TimeEvent;
-import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
-import org.joda.time.Minutes;
 import org.joda.time.Period;
+import org.joda.time.Seconds;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,17 +83,23 @@ public class TimeService {
         if (!isRunning) return;
         if (timer != null) timer.cancel();
         timer = null;
-        Period remaining = null;
 
-        //compute endDate if defined
+        Period remaining;
+
         if (endDate != null) {
+            //compute endDate if defined
             remaining = new Period(LocalDateTime.now(), endDate);
+
+            if (remaining.toStandardSeconds().getSeconds() <= 0) {
+                endDate = null;
+            }
+        } else {
+            //only send second to update UI progress bar
+            remaining = Seconds.seconds(LocalDateTime.now().getSecondOfMinute()).toPeriod();
         }
 
-        //avoid sending to UI if not changed
-        if (remaining != null) {
-            bus.post(new TimeEvent(remaining));
-        }
+        //send update to UI
+        bus.post(new TimeEvent(remaining));
 
         //current session in progress, let's recompute end time in 3000 sec
         timer = new Timer();

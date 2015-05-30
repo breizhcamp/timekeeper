@@ -112,6 +112,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
         Proposal proposal = event.getProposal();
         if (proposal == null) {
             sessionNameTxt.setText(R.string.no_session);
+            minutesTxt.setText(Integer.toString(0));
         } else {
             sessionNameTxt.setText(proposal.getTitle());
         }
