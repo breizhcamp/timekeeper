@@ -19,9 +19,28 @@
             android:background="#000000"
             android:scaleType="fitCenter" />
 
-        <TextView android:id="@+id/fullscreen_content" android:layout_width="match_parent"
-            android:layout_height="match_parent" android:keepScreenOn="true" android:textColor="#ff35cdff"
-            android:textStyle="bold" android:textSize="80sp" android:gravity="center"
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="5sp"
+            android:id="@+id/remainingProgressBar"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@+id/logoImg"
+            android:layout_toEndOf="@+id/logoImg"
+            android:progressDrawable="@drawable/remaining_progress_bar"
+            android:progress="0"
+            android:max="60" />
+
+        <TextView
+            android:id="@+id/fullscreen_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:keepScreenOn="true"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textSize="200sp"
+            android:gravity="center"
             android:text="@string/nb_min"
             android:layout_toRightOf="@+id/logoImg"
             android:layout_toEndOf="@+id/logoImg" />
@@ -38,29 +57,33 @@
             android:gravity="end"
             android:layout_alignParentBottom="true"
             android:textSize="20sp" />
+
+        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@color/black_overlay" android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+                <Button android:id="@+id/overrideTimeBtn" style="?metaButtonBarButtonStyle"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/override_time" />
+
+                <Button android:id="@+id/changeRoomBtn" style="?metaButtonBarButtonStyle"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="@string/change_room" />
+
+            </LinearLayout>
+
+        </FrameLayout>
     </RelativeLayout>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay" android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <Button android:id="@+id/overrideTimeBtn" style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="@string/override_time" />
-
-            <Button android:id="@+id/changeRoomBtn" style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="1" android:text="@string/change_room" />
-
-        </LinearLayout>
-
-    </FrameLayout>
 
 </FrameLayout>

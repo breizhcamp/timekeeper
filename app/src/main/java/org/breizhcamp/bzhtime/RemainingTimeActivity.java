@@ -7,6 +7,8 @@ import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
 import org.breizhcamp.bzhtime.events.TimeEvent;
 import org.breizhcamp.bzhtime.util.FullScreenActivity;
 import org.breizhcamp.bzhtime.util.SystemUiHider;
+import org.joda.time.Minutes;
+import org.joda.time.Period;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -22,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -41,6 +44,9 @@ public class RemainingTimeActivity extends FullScreenActivity {
 
     @InjectView(R.id.fullscreen_content)
     protected TextView minutesTxt;
+
+    @InjectView(R.id.remainingProgressBar)
+    protected ProgressBar secProgressBar;
 
     @InjectView(R.id.fullscreen_content_controls)
     protected LinearLayout controls;
@@ -92,7 +98,14 @@ public class RemainingTimeActivity extends FullScreenActivity {
 
     /* ***********  EVENTS  ********** */
     public void onEventMainThread(TimeEvent event) {
-        minutesTxt.setText(event.getNbMinutes() + " min");
+        Period remaining = event.getRemaining();
+        int minutes = remaining.toStandardMinutes().getMinutes();
+        if (minutes < 0) minutes = 0;
+
+        minutesTxt.setText(Integer.toString(minutes));
+
+        int sec = remaining.getSeconds();
+        secProgressBar.setProgress(60 - sec);
     }
 
     public void onEventMainThread(CurrentSessionEvt event) {

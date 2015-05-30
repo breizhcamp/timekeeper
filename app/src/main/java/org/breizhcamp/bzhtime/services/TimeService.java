@@ -6,8 +6,10 @@ import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
 import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
 import org.breizhcamp.bzhtime.events.GetCurrentSessionEvt;
 import org.breizhcamp.bzhtime.events.TimeEvent;
+import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Minutes;
+import org.joda.time.Period;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,7 +27,6 @@ public class TimeService {
 
     private String room;
     private LocalDateTime endDate;
-    private int lastRemaining;
     private Timer timer;
 
     public TimeService(SchedulerService schedulerService) {
@@ -83,21 +84,19 @@ public class TimeService {
         if (!isRunning) return;
         if (timer != null) timer.cancel();
         timer = null;
-        int remaining = 0;
+        Period remaining = null;
 
         //compute endDate if defined
         if (endDate != null) {
-            remaining = Minutes.minutesBetween(LocalDateTime.now(), endDate).getMinutes();
+            remaining = new Period(LocalDateTime.now(), endDate);
         }
-        if (remaining < 0) remaining = 0;
 
-        if (lastRemaining != remaining) {
-            //avoid sending to UI if not changed
+        //avoid sending to UI if not changed
+        if (remaining != null) {
             bus.post(new TimeEvent(remaining));
-            lastRemaining = remaining;
         }
 
-        //current session in progress, let's recompute end time in 5000 sec
+        //current session in progress, let's recompute end time in 3000 sec
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -108,7 +107,7 @@ public class TimeService {
                     computeRemaining();
                 }
             }
-        }, 5000);
+        }, 3000);
     }
 
     private void reloadCurrentSession() {

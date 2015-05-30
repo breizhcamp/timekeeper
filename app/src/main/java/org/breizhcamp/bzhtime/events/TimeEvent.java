@@ -1,16 +1,19 @@
 package org.breizhcamp.bzhtime.events;
 
+import org.joda.time.Duration;
+import org.joda.time.Period;
+
 /**
- * Message send to UI to update number of minutes
+ * Message send to UI to update remaining time
  */
 public class TimeEvent {
 
-    private int nbMinutes;
+    private Period remaining;
 
     private String errorMsg;
 
-    public TimeEvent(int nbMinutes) {
-        this.nbMinutes = nbMinutes;
+    public TimeEvent(Period remaining) {
+        this.remaining = remaining;
     }
 
     public TimeEvent(String errorMsg) {
@@ -21,11 +24,7 @@ public class TimeEvent {
         return errorMsg != null;
     }
 
-    public int getNbMinutes() {
-        return nbMinutes;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
+    public Period getRemaining() {
+        return remaining;
     }
 }
