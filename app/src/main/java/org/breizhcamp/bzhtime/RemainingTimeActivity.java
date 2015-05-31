@@ -18,11 +18,13 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -41,6 +43,9 @@ import de.greenrobot.event.EventBus;
  * status bar and navigation/system bar) with user interaction.
  */
 public class RemainingTimeActivity extends FullScreenActivity {
+
+    @InjectView(R.id.timeLayout)
+    protected FrameLayout timeLayout;
 
     @InjectView(R.id.fullscreen_content)
     protected TextView minutesTxt;
@@ -109,6 +114,13 @@ public class RemainingTimeActivity extends FullScreenActivity {
         if (minutes < 0) minutes = 0;
 
         minutesTxt.setText(Integer.toString(minutes));
+        if (minutes <= 2) {
+            timeLayout.setBackgroundColor(getResources().getColor(R.color.end_bg));
+        } else if (minutes <= 5) {
+            timeLayout.setBackgroundColor(getResources().getColor(R.color.warn_bg));
+        } else {
+            timeLayout.setBackgroundColor(getResources().getColor(R.color.normal_bg));
+        }
 
         int sec = remaining.getSeconds();
         secProgressBar.setProgress(60 - sec);

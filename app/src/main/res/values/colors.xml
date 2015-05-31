@@ -2,4 +2,8 @@
 
     <color name="black_overlay">#66000000</color>
 
+    <color name="normal_bg">#0099cc</color>
+    <color name="warn_bg">#ffff6d1f</color>
+    <color name="end_bg">#ffcc0600</color>
+
 </resources>
