@@ -40,10 +40,12 @@ public class TimeService {
     public void onEvent(CountdownMgtEvt event) {
         isRunning = event.isRunning();
 
-        String oldRoom = room;
-        room = event.getRoom();
+        if (event.isOverride()) {
+            endDate = LocalDateTime.now().plusMinutes(event.getOverrideMin()).plusSeconds(59);
+            computeRemaining();
 
-        if (room == null || !room.equals(oldRoom)) {
+        } else {
+            room = event.getRoom();
             reloadCurrentSession();
         }
     }

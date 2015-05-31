@@ -54,8 +54,14 @@ public class RemainingTimeActivity extends FullScreenActivity {
     @InjectViews({ R.id.overrideTimeBtn, R.id.changeRoomBtn })
     protected List<View> buttons;
 
+    @InjectView(R.id.overrideTimeBtn)
+    protected Button overrideButton;
+
     @InjectView(R.id.sessionNameTxt)
     protected TextView sessionNameTxt;
+
+    /** If override is defined, this variable is > 0 */
+    private int lastOverride;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +112,11 @@ public class RemainingTimeActivity extends FullScreenActivity {
 
         int sec = remaining.getSeconds();
         secProgressBar.setProgress(60 - sec);
+
+        if (lastOverride > 0 && minutes != lastOverride) {
+            lastOverride = minutes;
+            setOverrideTime(String.valueOf(minutes));
+        }
     }
 
     public void onEventMainThread(CurrentSessionEvt event) {
@@ -160,7 +171,40 @@ public class RemainingTimeActivity extends FullScreenActivity {
 
     @OnClick(R.id.overrideTimeBtn)
     protected void onOverrideTimeClick(View view) {
-        //TODO
+        if (lastOverride > 0) {
+            //cancel override time
+            lastOverride = 0;
+            setOverrideTime("0");
+            startCountdown();
+            overrideButton.setText(R.string.override_time);
+            return;
+        }
+
+        //define override time
+        overrideButton.setText(R.string.override_time_cancel);
+        final View dialogView = getLayoutInflater().inflate(R.layout.override_time_dialog, null);
+        final TextView overrideTime = ButterKnife.findById(dialogView, R.id.overrideTimeTxt);
+        String savedOverrideTime = getOverrideTime();
+        if (!savedOverrideTime.equals("0")) {
+            overrideTime.setText(savedOverrideTime);
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.override_time)
+                .setView(dialogView)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        defineOverrideTime(overrideTime.getText().toString());
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.changeRoomBtn)
@@ -185,33 +229,54 @@ public class RemainingTimeActivity extends FullScreenActivity {
         EventBus.getDefault().post(new FlushScheduleCacheEvt(getScheduleUrl()));
     }
 
+    protected void defineOverrideTime(String minutes) {
+        setOverrideTime(minutes);
+        sessionNameTxt.setText("Temps manuel");
+
+        int min = Integer.parseInt(minutes);
+        lastOverride = min;
+        EventBus.getDefault().post(new CountdownMgtEvt(true, min));
+    }
+
     protected String getRoomName() {
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        return prefs.getString("room", RemainingTimeApp.DEFAULT_ROOM);
+        return getPref("room", RemainingTimeApp.DEFAULT_ROOM);
     }
 
     protected void setRoomName(String roomName) {
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("room", roomName);
-        editor.apply();
+        setPref("room", roomName);
         updateTitle(roomName);
     }
 
     protected String getScheduleUrl() {
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        return prefs.getString("scheduleUrl", RemainingTimeApp.DEFAULT_ROOM);
+        return getPref("scheduleUrl", RemainingTimeApp.DEFAULT_SCHEDULE_URL);
     }
 
     protected void setScheduleUrl(String scheduleUrl) {
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("scheduleUrl", scheduleUrl);
-        editor.apply();
+        setPref("scheduleUrl", scheduleUrl);
+    }
+
+    protected String getOverrideTime() {
+        return getPref("overrideTime", "80");
+    }
+
+    protected void setOverrideTime(String overrideTime) {
+        setPref("overrideTime", overrideTime);
     }
 
     private void updateTitle(String roomName) {
         setTitle("BzhTime - " + roomName);
+    }
+
+    private String getPref(String key, String defaultValue) {
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        return prefs.getString(key, defaultValue);
+    }
+
+    private void setPref(String key, String value) {
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.apply();
     }
 
     @Override

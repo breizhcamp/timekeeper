@@ -7,13 +7,15 @@
 
     <string name="change_room">Changer de salle</string>
     <string name="override_time">Définir tps restant</string>
+    <string name="override_time_cancel">Supprimer tps manuel</string>
+    <string name="override_time_text">Durée restante (min)</string>
 
     <string name="pick_room">Choisissez une salle</string>
 
     <string name="reload_schedule">Recharger programme</string>
     <string name="options">Adresse schedule.json</string>
     <string name="schedule_url_txt_hint">adresse schedule.json</string>
+
     <string name="ok">OK</string>
     <string name="cancel">Annuler</string>
-
 </resources>
