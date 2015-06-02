@@ -42,7 +42,7 @@ public class TimeService {
         isRunning = event.isRunning();
 
         if (event.isOverride()) {
-            endDate = LocalDateTime.now().plusMinutes(event.getOverrideMin()).plusSeconds(59);
+            endDate = LocalDateTime.now().plusMinutes(event.getOverrideMin());
             computeRemaining();
 
         } else {
