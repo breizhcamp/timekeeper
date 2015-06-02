@@ -35,6 +35,7 @@ public class TimeService {
 
     /**
      * Received when the activity starts or suspend
+     *
      * @param event Start/stop event, if start, room name must be defined
      */
     public void onEvent(CountdownMgtEvt event) {
@@ -52,6 +53,7 @@ public class TimeService {
 
     /**
      * Received when the force reload from schedule file is asked
+     *
      * @param event Event
      */
     public void onEvent(FlushScheduleCacheEvt event) {
@@ -62,6 +64,7 @@ public class TimeService {
 
     /**
      * Received when the current session are found, the countdown can be started
+     *
      * @param event Contains the current session
      */
     public void onEvent(CurrentSessionEvt event) {
@@ -87,6 +90,7 @@ public class TimeService {
         timer = null;
 
         Period remaining;
+        boolean timerRunning = false;
 
         if (endDate != null) {
             //compute endDate if defined
@@ -94,6 +98,8 @@ public class TimeService {
 
             if (remaining.toStandardSeconds().getSeconds() <= 0) {
                 endDate = null;
+            } else {
+                timerRunning = true;
             }
         } else {
             //only send second to update UI progress bar
@@ -101,7 +107,7 @@ public class TimeService {
         }
 
         //send update to UI
-        bus.post(new TimeEvent(remaining));
+        bus.post(new TimeEvent(remaining, timerRunning));
 
         //current session in progress, let's recompute end time in 3000 sec
         timer = new Timer();

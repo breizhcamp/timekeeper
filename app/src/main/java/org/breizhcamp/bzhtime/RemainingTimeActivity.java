@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -30,6 +32,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -56,7 +60,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
     @InjectView(R.id.fullscreen_content_controls)
     protected LinearLayout controls;
 
-    @InjectViews({ R.id.overrideTimeBtn, R.id.changeRoomBtn })
+    @InjectViews({R.id.overrideTimeBtn, R.id.changeRoomBtn})
     protected List<View> buttons;
 
     @InjectView(R.id.overrideTimeBtn)
@@ -65,7 +69,9 @@ public class RemainingTimeActivity extends FullScreenActivity {
     @InjectView(R.id.sessionNameTxt)
     protected TextView sessionNameTxt;
 
-    /** If override is defined, this variable is > 0 */
+    /**
+     * If override is defined, this variable is > 0
+     */
     private int lastOverride;
 
     @Override
@@ -111,10 +117,19 @@ public class RemainingTimeActivity extends FullScreenActivity {
     public void onEventMainThread(TimeEvent event) {
         Period remaining = event.getRemaining();
         int minutes = remaining.toStandardMinutes().getMinutes();
+        int seconds = remaining.getSeconds();
+
         if (minutes < 0) minutes = 0;
 
         minutesTxt.setText(Integer.toString(minutes));
-        if (minutes <= 2) {
+
+        if (minutes == 0 && seconds <= 12 && event.isTimerRunning()) { // if within the last 12 seconds of the timer
+            timeLayout.setBackgroundResource(R.drawable.times_up_animation);
+            AnimationDrawable animation = (AnimationDrawable) timeLayout.getBackground();
+            animation.start();
+        } else if (minutes == 0 && !event.isTimerRunning()) {
+            timeLayout.setBackgroundColor(getResources().getColor(R.color.stopped_bg));
+        } else if (minutes <= 2) {
             timeLayout.setBackgroundColor(getResources().getColor(R.color.end_bg));
         } else if (minutes <= 5) {
             timeLayout.setBackgroundColor(getResources().getColor(R.color.warn_bg));
@@ -122,8 +137,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
             timeLayout.setBackgroundColor(getResources().getColor(R.color.normal_bg));
         }
 
-        int sec = remaining.getSeconds();
-        secProgressBar.setProgress(60 - sec);
+        secProgressBar.setProgress(60 - seconds);
 
         if (lastOverride > 0 && minutes != lastOverride) {
             lastOverride = minutes;
@@ -230,7 +244,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
                         startCountdown();
                     }
                 })
-        .show();
+                .show();
     }
 
     protected void startCountdown() {

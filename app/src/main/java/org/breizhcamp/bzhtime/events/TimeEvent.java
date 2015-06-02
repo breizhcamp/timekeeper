@@ -10,10 +10,13 @@ public class TimeEvent {
 
     private Period remaining;
 
+    private boolean timerRunning;
+
     private String errorMsg;
 
-    public TimeEvent(Period remaining) {
+    public TimeEvent(Period remaining, boolean timerRunning) {
         this.remaining = remaining;
+        this.timerRunning = timerRunning;
     }
 
     public TimeEvent(String errorMsg) {
@@ -26,5 +29,9 @@ public class TimeEvent {
 
     public Period getRemaining() {
         return remaining;
+    }
+
+    public boolean isTimerRunning() {
+        return timerRunning;
     }
 }
