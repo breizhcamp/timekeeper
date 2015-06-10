@@ -221,7 +221,11 @@ public class RemainingTimeActivity extends FullScreenActivity {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        defineOverrideTime(overrideTime.getText().toString());
+                        String time = overrideTime.getText().toString();
+                        if (time.length() == 0) {
+                            time = "0";
+                        }
+                        defineOverrideTime(time);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
