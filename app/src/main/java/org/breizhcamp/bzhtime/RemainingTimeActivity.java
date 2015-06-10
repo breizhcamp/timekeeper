@@ -142,10 +142,9 @@ public class RemainingTimeActivity extends FullScreenActivity {
         if (lastOverride > 0 && minutes != lastOverride) {
             lastOverride = minutes;
             setOverrideTime(String.valueOf(minutes));
-        }
-
-        if (!event.isTimerRunning()) {
-            cancelOverride();
+            if (minutes == 0) { // TODO à revoir
+                overrideButton.setText(R.string.override_time);
+            }
         }
     }
 
@@ -202,7 +201,11 @@ public class RemainingTimeActivity extends FullScreenActivity {
     @OnClick(R.id.overrideTimeBtn)
     protected void onOverrideTimeClick(View view) {
         if (lastOverride > 0) {
-            cancelOverride();
+            //cancel override time
+            lastOverride = 0;
+            setOverrideTime("0");
+            startCountdown();
+            overrideButton.setText(R.string.override_time);
             return;
         }
 
@@ -235,14 +238,6 @@ public class RemainingTimeActivity extends FullScreenActivity {
                     }
                 })
                 .show();
-    }
-
-    private void cancelOverride() {
-        //cancel override time
-        lastOverride = 0;
-        setOverrideTime("0");
-        startCountdown();
-        overrideButton.setText(R.string.override_time);
     }
 
     @OnClick(R.id.changeRoomBtn)
