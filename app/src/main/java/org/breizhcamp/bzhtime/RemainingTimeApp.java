@@ -13,11 +13,11 @@ import org.breizhcamp.bzhtime.services.TimeService;
 public class RemainingTimeApp extends Application {
     //TODO load this from json
     public static final String[] ROOMS = new String[] {
-            "Ouessant", "Bréhat", "Molène", "Belle-Ile-en-Mer", "Groix", "Arz"
+            "Amphi A", "Amphi B", "Amphi C", "Amphi D", "Labs", "Hall"
     };
     public static final String DEFAULT_ROOM = ROOMS[0];
 
-    public static final String DEFAULT_SCHEDULE_URL = "http://www.breizhcamp.org/json/schedule.json";
+    public static final String DEFAULT_SCHEDULE_URL = "http://www.breizhcamp.org/json/2016/schedule.json";
 
     @Override
     public void onCreate() {

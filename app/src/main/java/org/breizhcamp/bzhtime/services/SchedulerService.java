@@ -2,20 +2,20 @@ package org.breizhcamp.bzhtime.services;
 
 import android.util.Log;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.breizhcamp.bzhtime.RemainingTimeApp;
-import org.breizhcamp.bzhtime.dto.Jour;
 import org.breizhcamp.bzhtime.dto.Proposal;
-import org.breizhcamp.bzhtime.dto.Schedule;
 import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
 import org.breizhcamp.bzhtime.events.GetCurrentSessionEvt;
 import org.breizhcamp.bzhtime.util.IOUtils;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -25,7 +25,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 
@@ -34,17 +38,26 @@ import de.greenrobot.event.EventBus;
  */
 public class SchedulerService {
     private static final EventBus bus = EventBus.getDefault();
-    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
-    private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     private File cacheDir;
     private String scheduleUrl = RemainingTimeApp.DEFAULT_SCHEDULE_URL;
 
     private OkHttpClient httpClient = new OkHttpClient();
 
+    //mapping between room names and venues in schedule file
+    private Map<String, String> venues = new HashMap<>();
+
     public SchedulerService(File cacheDir) {
         this.cacheDir = cacheDir;
         bus.register(this);
+
+        venues.put("Amphi A", "Track1");
+        venues.put("Amphi B", "Track2");
+        venues.put("Amphi C", "Track3");
+        venues.put("Amphi D", "Track4");
+        venues.put("Labs", "Track5 (labs)");
+        venues.put("Hall", "Track6");
     }
 
     /**
@@ -73,36 +86,26 @@ public class SchedulerService {
             return;
         }
 
-        Schedule schedule = parseSchedule(scheduleFile);
+        List<Proposal> schedule = parseSchedule(scheduleFile);
         if (schedule == null) return;
 
+        String venue = venues.get(room);
+        LocalDateTime now = LocalDateTime.now();
         Proposal current = null;
-        List<Jour> jours = schedule.getProgramme().getJours();
-        for (Jour jour : jours) {
-            LocalDate day = LocalDate.parse(jour.getDate(), dateFormatter);
-            if (!day.isEqual(LocalDate.now())) {
+        for (Proposal proposal : schedule) {
+            if (!proposal.getVenue().equals(venue)) {
                 continue;
             }
 
-            //we're on the good day, let's find the right proposal
-            for (Proposal proposal : jour.getProposals()) {
-                if (!proposal.getRoom().equals(room)) {
-                    continue;
-                }
+            //we're on the right room, let's check the start and end
+            LocalDateTime start = LocalDateTime.parse(proposal.getEventStart(), dateTimeFormatter);
+            LocalDateTime end = LocalDateTime.parse(proposal.getEventEnd(), dateTimeFormatter).minusMinutes(5);
 
-                //we're on the right room, let's check the start and end
-                LocalDateTime start = LocalDateTime.parse(proposal.getStart(), timeFormatter).withFields(day);
-                LocalDateTime end = LocalDateTime.parse(proposal.getEnd(), timeFormatter).withFields(day);
-
-                LocalDateTime now = LocalDateTime.now();
-                if (start.isBefore(now) && end.isAfter(now)) {
-                    current = proposal;
-                    current.setEndDate(end);
-                }
+            if (start.isBefore(now) && end.isAfter(now)) {
+                current = proposal;
+                current.setEndDate(end);
+                break;
             }
-
-            //on the right day, exit loop
-            break;
         }
 
         //current could be null
@@ -145,10 +148,11 @@ public class SchedulerService {
      * @param scheduleFile file to parse
      * @return Schedule parsed or null if not found
      */
-    private Schedule parseSchedule(File scheduleFile) {
+    private List<Proposal> parseSchedule(File scheduleFile) {
         try {
-            Gson gson = new Gson();
-            return gson.fromJson(new FileReader(scheduleFile), Schedule.class);
+            Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+            Type collectionType = new TypeToken<ArrayList<Proposal>>(){}.getType();
+            return gson.fromJson(new FileReader(scheduleFile), collectionType);
         } catch (FileNotFoundException e) {
             postError("Impossible de trouver le fichier schedule [" + scheduleFile.getAbsolutePath() + "]", e);
         }

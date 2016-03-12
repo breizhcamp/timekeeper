@@ -6,25 +6,16 @@ import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
 import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
 import org.breizhcamp.bzhtime.events.TimeEvent;
 import org.breizhcamp.bzhtime.util.FullScreenActivity;
-import org.breizhcamp.bzhtime.util.SystemUiHider;
-import org.joda.time.Minutes;
 import org.joda.time.Period;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -32,8 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -154,7 +143,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
             sessionNameTxt.setText(R.string.no_session);
             minutesTxt.setText(Integer.toString(0));
         } else {
-            sessionNameTxt.setText(proposal.getTitle());
+            sessionNameTxt.setText(proposal.getName());
         }
     }
 

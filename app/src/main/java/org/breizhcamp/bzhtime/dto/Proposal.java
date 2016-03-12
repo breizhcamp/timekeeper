@@ -6,19 +6,17 @@ public class Proposal {
 
     private String id;
 
-    /** hh:mm */
-    private String start;
+    /** 2016-03-24T18:30:00 */
+    private String eventStart;
 
-    /** hh:mm */
-    private String end;
+    /** 2016-03-24T18:30:00 */
+    private String eventEnd;
 
-    private String title;
+    private String name;
 
     private String format;
 
-    private String room;
-
-    private String track;
+    private String venue;
 
     /** save the computed endDate to optimize */
     private LocalDateTime endDate;
@@ -32,28 +30,28 @@ public class Proposal {
         this.id = id;
     }
 
-    public String getStart() {
-        return start;
+    public String getEventStart() {
+        return eventStart;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setEventStart(String eventStart) {
+        this.eventStart = eventStart;
     }
 
-    public String getEnd() {
-        return end;
+    public String getEventEnd() {
+        return eventEnd;
     }
 
-    public void setEnd(String end) {
-        this.end = end;
+    public void setEventEnd(String eventEnd) {
+        this.eventEnd = eventEnd;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFormat() {
@@ -64,20 +62,12 @@ public class Proposal {
         this.format = format;
     }
 
-    public String getRoom() {
-        return room;
+    public String getVenue() {
+        return venue;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
-    }
-
-    public String getTrack() {
-        return track;
-    }
-
-    public void setTrack(String track) {
-        this.track = track;
+    public void setVenue(String venue) {
+        this.venue = venue;
     }
 
     public LocalDateTime getEndDate() {
