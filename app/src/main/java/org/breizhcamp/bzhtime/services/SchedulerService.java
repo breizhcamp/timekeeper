@@ -38,7 +38,7 @@ import de.greenrobot.event.EventBus;
  */
 public class SchedulerService {
     private static final EventBus bus = EventBus.getDefault();
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     private File cacheDir;
     private String scheduleUrl = RemainingTimeApp.DEFAULT_SCHEDULE_URL;
@@ -52,12 +52,11 @@ public class SchedulerService {
         this.cacheDir = cacheDir;
         bus.register(this);
 
-        venues.put("Amphi A", "Track1");
-        venues.put("Amphi B", "Track2");
-        venues.put("Amphi C", "Track3");
-        venues.put("Amphi D", "Track4");
-        venues.put("Labs", "Track5 (labs)");
-        venues.put("Hall", "Track6");
+        venues.put("Amphi A", "Amphi A");
+        venues.put("Amphi B", "Amphi B");
+        venues.put("Amphi C", "Amphi C");
+        venues.put("Amphi D", "Amphi D");
+        venues.put("Lab", "Lab");
     }
 
     /**
