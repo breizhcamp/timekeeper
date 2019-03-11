@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "org.breizhcamp.bzhtime"
@@ -20,20 +19,20 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
-    compile 'com.android.support:support-v4:22.1.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:22.1.1'
+    implementation 'com.android.support:support-v4:22.1.1'
 
-    compile 'com.google.code.gson:gson:2.3'
+    implementation 'com.google.code.gson:gson:2.3'
 
     //bus message
-    compile 'de.greenrobot:eventbus:2.4.0'
+    implementation 'de.greenrobot:eventbus:2.4.0'
 
     //http client
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    implementation 'com.squareup.okhttp:okhttp:2.4.0'
 
     //widget injection
-    compile 'com.jakewharton:butterknife:6.1.0'
+    implementation 'com.jakewharton:butterknife:6.1.0'
 
-    compile 'net.danlew:android.joda:2.7.2'
+    implementation 'net.danlew:android.joda:2.7.2'
 }
