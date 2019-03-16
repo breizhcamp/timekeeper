@@ -15,6 +15,7 @@ import org.breizhcamp.bzhtime.RemainingTimeApp;
 import org.breizhcamp.bzhtime.dto.Proposal;
 import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
 import org.breizhcamp.bzhtime.events.GetCurrentSessionEvt;
+import org.breizhcamp.bzhtime.events.MsgEvt;
 import org.breizhcamp.bzhtime.util.IOUtils;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -122,6 +123,7 @@ public class SchedulerService {
                     FileOutputStream out = new FileOutputStream(scheduleFile);
                     IOUtils.copy(response.body().byteStream(), out);
                     out.close();
+                    bus.post(new MsgEvt("Fichier schedule.json chargé"));
                     getCurrentSession(room);
 
                 } catch (IOException e) {
@@ -138,7 +140,7 @@ public class SchedulerService {
 
     private void postError(String msg, Exception e) {
         Log.e("org.breizhcamp.bzhtime", msg, e);
-        bus.post(new CurrentSessionEvt(msg));
+        bus.post(new MsgEvt(msg));
     }
 
     /**

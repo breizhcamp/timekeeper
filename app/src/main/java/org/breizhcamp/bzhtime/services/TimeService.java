@@ -68,10 +68,6 @@ public class TimeService {
      * @param event Contains the current session
      */
     public void onEvent(CurrentSessionEvt event) {
-        if (event.isError()) {
-            return;
-        }
-
         Proposal proposal = event.getProposal();
         if (proposal != null) {
             endDate = proposal.getEndDate();
@@ -84,7 +80,7 @@ public class TimeService {
     /**
      * Do the countdown and send the remaining time to the UI
      */
-    protected void computeRemaining() {
+    private void computeRemaining() {
         if (!isRunning) return;
         if (timer != null) timer.cancel();
         timer = null;

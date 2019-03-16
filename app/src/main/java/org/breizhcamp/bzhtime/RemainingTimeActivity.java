@@ -13,11 +13,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.breizhcamp.bzhtime.dto.Proposal;
 import org.breizhcamp.bzhtime.events.CountdownMgtEvt;
 import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
 import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
+import org.breizhcamp.bzhtime.events.MsgEvt;
 import org.breizhcamp.bzhtime.events.TimeEvent;
 import org.breizhcamp.bzhtime.util.FullScreenActivity;
 import org.joda.time.Period;
@@ -145,6 +147,10 @@ public class RemainingTimeActivity extends FullScreenActivity {
         } else {
             sessionNameTxt.setText(proposal.getName());
         }
+    }
+
+    public void onEventMainThread(MsgEvt event) {
+        Toast.makeText(this, event.getMsg(), Toast.LENGTH_LONG).show();
     }
 
     /* ***********  ACTIONS  ********** */
