@@ -1,13 +1,5 @@
 package org.breizhcamp.bzhtime;
 
-import org.breizhcamp.bzhtime.dto.Proposal;
-import org.breizhcamp.bzhtime.events.CountdownMgtEvt;
-import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
-import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
-import org.breizhcamp.bzhtime.events.TimeEvent;
-import org.breizhcamp.bzhtime.util.FullScreenActivity;
-import org.joda.time.Period;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -22,11 +14,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.breizhcamp.bzhtime.dto.Proposal;
+import org.breizhcamp.bzhtime.events.CountdownMgtEvt;
+import org.breizhcamp.bzhtime.events.CurrentSessionEvt;
+import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
+import org.breizhcamp.bzhtime.events.TimeEvent;
+import org.breizhcamp.bzhtime.util.FullScreenActivity;
+import org.joda.time.Period;
+
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.InjectViews;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
@@ -37,25 +37,25 @@ import de.greenrobot.event.EventBus;
  */
 public class RemainingTimeActivity extends FullScreenActivity {
 
-    @InjectView(R.id.timeLayout)
+    @BindView(R.id.timeLayout)
     protected FrameLayout timeLayout;
 
-    @InjectView(R.id.fullscreen_content)
+    @BindView(R.id.fullscreen_content)
     protected TextView minutesTxt;
 
-    @InjectView(R.id.remainingProgressBar)
+    @BindView(R.id.remainingProgressBar)
     protected ProgressBar secProgressBar;
 
-    @InjectView(R.id.fullscreen_content_controls)
+    @BindView(R.id.fullscreen_content_controls)
     protected LinearLayout controls;
 
-    @InjectViews({R.id.overrideTimeBtn, R.id.changeRoomBtn})
+    @BindViews({R.id.overrideTimeBtn, R.id.changeRoomBtn})
     protected List<View> buttons;
 
-    @InjectView(R.id.overrideTimeBtn)
+    @BindView(R.id.overrideTimeBtn)
     protected Button overrideButton;
 
-    @InjectView(R.id.sessionNameTxt)
+    @BindView(R.id.sessionNameTxt)
     protected TextView sessionNameTxt;
 
     /**
@@ -66,7 +66,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_remaining_time);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         super.onCreate(savedInstanceState);
     }
