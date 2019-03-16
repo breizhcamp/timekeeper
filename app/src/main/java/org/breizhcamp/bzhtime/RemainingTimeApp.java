@@ -13,11 +13,11 @@ import org.breizhcamp.bzhtime.services.TimeService;
 public class RemainingTimeApp extends Application {
     //TODO load this from json
     public static final String[] ROOMS = new String[] {
-            "Amphi A", "Amphi B", "Amphi C", "Amphi D", "Lab"
+            "Amphi A", "Amphi B", "Amphi C", "Amphi D"
     };
     public static final String DEFAULT_ROOM = ROOMS[0];
 
-    public static final String DEFAULT_SCHEDULE_URL = "https://api.cfp.io/api/schedule?event=breizhcamp";
+    public static final String DEFAULT_SCHEDULE_URL = "https://breizhcamp.cfp.io/api/schedule";
 
     @Override
     public void onCreate() {

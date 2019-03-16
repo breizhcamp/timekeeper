@@ -56,7 +56,6 @@ public class SchedulerService {
         venues.put("Amphi B", "Amphi B");
         venues.put("Amphi C", "Amphi C");
         venues.put("Amphi D", "Amphi D");
-        venues.put("Lab", "Lab");
     }
 
     /**
@@ -98,7 +97,7 @@ public class SchedulerService {
 
             //we're on the right room, let's check the start and end
             LocalDateTime start = LocalDateTime.parse(proposal.getEventStart(), dateTimeFormatter);
-            LocalDateTime end = LocalDateTime.parse(proposal.getEventEnd(), dateTimeFormatter).minusMinutes(5);
+            LocalDateTime end = LocalDateTime.parse(proposal.getEventEnd(), dateTimeFormatter);
 
             if (start.isBefore(now) && end.isAfter(now)) {
                 current = proposal;
