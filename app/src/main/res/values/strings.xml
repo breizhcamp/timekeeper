@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">BzhTime</string>
+    <string name="app_name">Timekeeper BreizhCamp</string>
 
     <string name="logo">logo</string>
     <string name="nb_min">0</string>
-    <string name="no_session">Aucune session en cours</string>
+    <string name="no_session">Aucune session en cours\nLe BreizhCamp est terminé !</string>
+    <string name="no_session_with_next">Aucune session en cours\nProchaine session \"%1$s\" %2$s</string>
 
     <string name="change_room">Changer de salle</string>
     <string name="override_time">Définir tps restant</string>

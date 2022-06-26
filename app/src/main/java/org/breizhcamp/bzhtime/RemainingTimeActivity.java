@@ -22,7 +22,10 @@ import org.breizhcamp.bzhtime.events.FlushScheduleCacheEvt;
 import org.breizhcamp.bzhtime.events.MsgEvt;
 import org.breizhcamp.bzhtime.events.TimeEvent;
 import org.breizhcamp.bzhtime.util.FullScreenActivity;
+import org.joda.time.LocalDate;
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
 
@@ -142,8 +145,21 @@ public class RemainingTimeActivity extends FullScreenActivity {
     public void onEventMainThread(CurrentSessionEvt event) {
         Proposal proposal = event.getProposal();
         if (proposal == null) {
-            sessionNameTxt.setText(R.string.no_session);
             minutesTxt.setText(Integer.toString(0));
+
+            Proposal next = event.getNext();
+            if (next == null) {
+                sessionNameTxt.setText(R.string.no_session);
+            } else {
+                final DateTimeFormatter formatter;
+                if (next.getStartDate().toLocalDate().equals(LocalDate.now())) {
+                    formatter = DateTimeFormat.forPattern("'à' HH'h'mm");
+                } else {
+                    formatter = DateTimeFormat.forPattern("'le' EE dd MMM yyyy 'à' HH'h'mm");
+                }
+                sessionNameTxt.setText(getString(R.string.no_session_with_next,
+                        next.getName(), next.getStartDate().toString(formatter)));
+            }
         } else {
             sessionNameTxt.setText(proposal.getName());
         }
@@ -172,7 +188,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
 
     protected void changeScheduleUrl() {
         final View dialogView = getLayoutInflater().inflate(R.layout.options_dialog, null);
-        final TextView scheduleUrl = ButterKnife.findById(dialogView, R.id.scheduleUrlTxt);
+        final TextView scheduleUrl = dialogView.findViewById(R.id.scheduleUrlTxt);
         scheduleUrl.setText(getScheduleUrl());
 
         new AlertDialog.Builder(this)
@@ -207,7 +223,7 @@ public class RemainingTimeActivity extends FullScreenActivity {
         //define override time
         overrideButton.setText(R.string.override_time_cancel);
         final View dialogView = getLayoutInflater().inflate(R.layout.override_time_dialog, null);
-        final TextView overrideTime = ButterKnife.findById(dialogView, R.id.overrideTimeTxt);
+        final TextView overrideTime = dialogView.findViewById(R.id.overrideTimeTxt);
         String savedOverrideTime = getOverrideTime();
         if (!savedOverrideTime.equals("0")) {
             overrideTime.setText(savedOverrideTime);

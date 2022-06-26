@@ -91,6 +91,7 @@ public class SchedulerService {
         String venue = venues.get(room);
         LocalDateTime now = LocalDateTime.now();
         Proposal current = null;
+        Proposal next = null;
         for (Proposal proposal : schedule) {
             if (!proposal.getVenue().equals(venue)) {
                 continue;
@@ -102,13 +103,17 @@ public class SchedulerService {
 
             if (start.isBefore(now) && end.isAfter(now)) {
                 current = proposal;
+                current.setStartDate(start);
                 current.setEndDate(end);
-                break;
+            } else if (start.isAfter(now) && (next == null || start.isBefore(next.getStartDate()))) {
+                next = proposal;
+                next.setStartDate(start);
+                next.setEndDate(end);
             }
         }
 
         //current could be null
-        bus.post(new CurrentSessionEvt(current));
+        bus.post(new CurrentSessionEvt(current, next));
     }
 
 

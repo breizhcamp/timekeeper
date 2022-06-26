@@ -19,6 +19,7 @@ public class Proposal {
     private String venue;
 
     /** save the computed endDate to optimize */
+    private LocalDateTime startDate;
     private LocalDateTime endDate;
 
 
@@ -68,6 +69,14 @@ public class Proposal {
 
     public void setVenue(String venue) {
         this.venue = venue;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
     public LocalDateTime getEndDate() {
