@@ -17,7 +17,7 @@ public class RemainingTimeApp extends Application {
     };
     public static final String DEFAULT_ROOM = ROOMS[0];
 
-    public static final String DEFAULT_SCHEDULE_URL = "https://breizhcamp.cfp.io/api/schedule";
+    public static final String DEFAULT_SCHEDULE_URL = "https://www.breizhcamp.org/json/schedule.json";
 
     @Override
     public void onCreate() {

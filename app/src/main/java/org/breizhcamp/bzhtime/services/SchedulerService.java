@@ -39,7 +39,7 @@ import de.greenrobot.event.EventBus;
  */
 public class SchedulerService {
     private static final EventBus bus = EventBus.getDefault();
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     private File cacheDir;
     private String scheduleUrl = RemainingTimeApp.DEFAULT_SCHEDULE_URL;

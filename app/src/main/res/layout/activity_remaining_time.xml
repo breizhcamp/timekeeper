@@ -37,14 +37,14 @@
             android:id="@+id/fullscreen_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:keepScreenOn="true"
-            android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:textSize="200sp"
-            android:gravity="center"
-            android:text="@string/nb_min"
+            android:layout_toEndOf="@+id/logoImg"
             android:layout_toRightOf="@+id/logoImg"
-            android:layout_toEndOf="@+id/logoImg" />
+            android:gravity="center"
+            android:keepScreenOn="true"
+            android:text="@string/nb_min"
+            android:textColor="#ffffff"
+            android:textSize="400sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -52,6 +52,7 @@
             android:text="@string/no_session"
             android:id="@+id/sessionNameTxt"
             android:layout_marginRight="5sp"
+            android:layout_marginEnd="5sp"
             android:layout_alignEnd="@id/fullscreen_content"
             android:layout_toRightOf="@+id/logoImg"
             android:layout_toEndOf="@+id/logoImg"
@@ -59,25 +60,39 @@
             android:layout_alignParentBottom="true"
             android:textSize="20sp" />
 
-        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            android:layout_alignParentTop="true"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentTop="true"
+            android:fitsSystemWindows="true">
 
-            <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/fullscreen_content_controls"
+                style="?metaButtonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
-                android:background="@color/black_overlay" android:orientation="horizontal"
+                android:background="@color/black_overlay"
+                android:orientation="horizontal"
                 tools:ignore="UselessParent">
 
-                <Button android:id="@+id/overrideTimeBtn" style="?metaButtonBarButtonStyle"
-                    android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:text="@string/override_time" />
+                <Button
+                    android:id="@+id/overrideTimeBtn"
+                    style="?metaButtonBarButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/override_time" />
 
-                <Button android:id="@+id/changeRoomBtn" style="?metaButtonBarButtonStyle"
-                    android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:text="@string/change_room" />
+                <Button
+                    android:id="@+id/changeRoomBtn"
+                    style="?metaButtonBarButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/change_room" />
 
             </LinearLayout>
 
