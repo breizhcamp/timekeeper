@@ -13,7 +13,7 @@ import org.breizhcamp.bzhtime.services.TimeService;
 public class RemainingTimeApp extends Application {
     //TODO load this from json
     public static final String[] ROOMS = new String[] {
-            "Amphi A", "Amphi B", "Amphi C", "Amphi D"
+            "Amphi A", "Amphi B", "Amphi C", "Amphi D", "Amphi E"
     };
     public static final String DEFAULT_ROOM = ROOMS[0];
 
