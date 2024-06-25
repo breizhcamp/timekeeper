@@ -57,6 +57,7 @@ public class SchedulerService {
         venues.put("Amphi B", "Amphi B");
         venues.put("Amphi C", "Amphi C");
         venues.put("Amphi D", "Amphi D");
+        venues.put("Amphi E", "Amphi E");
     }
 
     /**
